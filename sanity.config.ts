@@ -25,4 +25,6 @@ export default defineConfig({
   // Configuración de API
   apiVersion,
   useCdn: false,
+  // CORS - Agregar manualmente después del primer deploy
+  // Una vez deployed, registra el studio desde la UI de Sanity
 });
