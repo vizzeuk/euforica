@@ -22,4 +22,7 @@ export default defineConfig({
   // Personalización del Studio
   title: 'Euforica CMS',
   icon: () => '✨',
+  // Configuración de API
+  apiVersion,
+  useCdn: false,
 });
