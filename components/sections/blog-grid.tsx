@@ -28,7 +28,7 @@ function BlogCard({ post, index, featured = false }: BlogCardProps) {
       <Link href={`/blog/${slug}`} className="block">
         {/* Image Container */}
         <div className={`relative overflow-hidden bg-neutral-100 ${
-          featured ? "h-[500px] md:h-full" : "h-[400px]"
+          featured ? "h-[500px] md:h-[600px]" : "h-[400px]"
         }`}>
           {imageUrl ? (
             <Image
@@ -37,6 +37,7 @@ function BlogCard({ post, index, featured = false }: BlogCardProps) {
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes={featured ? "(min-width: 768px) 66vw, 100vw" : "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"}
+              priority={featured}
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-50" />

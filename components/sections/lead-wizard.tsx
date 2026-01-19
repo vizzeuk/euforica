@@ -230,7 +230,7 @@ export function LeadWizard() {
                   <div className="flex items-center justify-center gap-3">
                     <Users className="h-6 w-6 text-neutral-400" />
                     <span className="font-serif text-5xl font-light">
-                      {guestCount}
+                      {guestCount === 250 ? "250+" : guestCount}
                     </span>
                     <span className="text-neutral-400">personas</span>
                   </div>
@@ -241,13 +241,13 @@ export function LeadWizard() {
                     value={[guestCount]}
                     onValueChange={([value]) => setValue("guestCount", value)}
                     min={10}
-                    max={500}
+                    max={250}
                     step={10}
                     className="w-full"
                   />
                   <div className="mt-4 flex justify-between text-xs text-neutral-500">
                     <span>10</span>
-                    <span>500+</span>
+                    <span>250+</span>
                   </div>
                 </div>
 
@@ -345,6 +345,24 @@ export function LeadWizard() {
                     {errors.phone && (
                       <p className="mt-1 text-sm text-red-400">
                         {errors.phone.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="message" className="text-white">
+                      Cuéntanos tu visión <span className="text-neutral-500 text-xs">(opcional)</span>
+                    </Label>
+                    <textarea
+                      id="message"
+                      {...register("message")}
+                      placeholder="Comparte cualquier detalle que nos ayude a entender mejor tu celebración ideal..."
+                      rows={4}
+                      className="mt-2 w-full rounded-md border border-neutral-800 bg-neutral-900 px-4 py-3 text-white placeholder:text-neutral-500 focus:border-neutral-600 focus:outline-none focus:ring-2 focus:ring-neutral-700"
+                    />
+                    {errors.message && (
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.message.message}
                       </p>
                     )}
                   </div>
