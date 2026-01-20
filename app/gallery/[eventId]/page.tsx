@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import { getGalleryByEventId } from '@/sanity/lib/queries';
 import { GalleryCarousel } from '@/components/gallery/gallery-carousel';
+import { GalleryGrid } from '@/components/gallery/gallery-grid';
 import { Calendar, Camera, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
@@ -91,50 +92,78 @@ export default async function GalleryPage({ params }: PageProps) {
 
             {/* Badge del tipo de evento */}
             <div className="inline-flex items-center rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium capitalize">
-              {gallery.eventType === 'boda' && '💍 Boda'}
-              {gallery.eventType === 'cumpleanos' && '🎉 Cumpleaños'}
-              {gallery.eventType === 'corporativo' && '💼 Corporativo'}
-              {gallery.eventType === 'otro' && '✨ Evento'}
+              {gallery.eventType === 'boda' && 'Boda'}
+              {gallery.eventType === 'cumpleanos' && 'Cumpleaños'}
+              {gallery.eventType === 'corporativo' && 'Corporativo'}
+              {gallery.eventType === 'otro' && 'Evento'}
             </div>
           </div>
         </div>
       </header>
 
-      {/* Galería */}
-      <main className="mx-auto max-w-7xl px-6 py-12">
-        <GalleryCarousel 
-          photos={gallery.photos || []}
-          eventName={gallery.eventName}
-          allowDownload={gallery.allowDownload}
-        />
+      {/* Carrusel */}
+      <section className="bg-white py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-8">
+            <h2 className="mb-2 text-2xl font-light tracking-tight">
+              Momentos destacados
+            </h2>
+            <p className="text-sm text-neutral-600">
+              Navegá por las mejores fotos del evento
+            </p>
+          </div>
+          <GalleryCarousel 
+            photos={gallery.photos || []}
+            eventName={gallery.eventName}
+            allowDownload={gallery.allowDownload}
+          />
+        </div>
+      </section>
 
-        {/* Información adicional */}
-        <div className="mt-12 rounded-lg border border-neutral-200 bg-white p-6 md:p-8">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-neutral-600">
-                Disponible hasta
-              </h3>
-              <p className="text-lg font-medium">
-                {expirationDate}
-              </p>
-            </div>
-
-            {gallery.allowDownload && (
-              <div className="text-sm text-neutral-600">
-                <p className="mb-2">
-                  💡 <span className="font-medium">Tip:</span> Haz clic en cualquier foto para verla en pantalla completa
-                </p>
-                <p>
-                  📥 Descarga tus fotos favoritas antes de la fecha de expiración
+      {/* Información adicional */}
+      <section className="bg-neutral-50 py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="rounded-lg border border-neutral-200 bg-white p-6 md:p-8">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-neutral-600">
+                  Disponible hasta
+                </h3>
+                <p className="text-lg font-medium">
+                  {expirationDate}
                 </p>
               </div>
-            )}
+
+              {gallery.allowDownload && (
+                <div className="text-sm text-neutral-600">
+                  <p className="mb-2">
+                    <span className="font-medium">Tip:</span> Haz clic en cualquier foto para verla en pantalla completa
+                  </p>
+                  <p>
+                    Descarga tus fotos favoritas antes de la fecha de expiración
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* CTA para crear su propio evento */}
-        <div className="mt-12 rounded-lg bg-gradient-to-br from-neutral-900 to-neutral-800 p-8 text-center text-white md:p-12">
+      {/* Galería completa - Todas las fotos */}
+      <section className="bg-white py-16">
+        <div className="mx-auto max-w-7xl px-6">
+          <GalleryGrid 
+            photos={gallery.photos || []}
+            eventName={gallery.eventName}
+            allowDownload={gallery.allowDownload}
+          />
+        </div>
+      </section>
+
+      {/* CTA para crear su propio evento */}
+      <section className="bg-neutral-50 py-16">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="rounded-lg bg-gradient-to-br from-neutral-900 to-neutral-800 p-8 text-center text-white md:p-12">
           <h2 className="mb-4 font-serif text-3xl font-light md:text-4xl">
             ¿Te gustaría una galería para tu evento?
           </h2>
@@ -148,18 +177,19 @@ export default async function GalleryPage({ params }: PageProps) {
             Solicita tu cotización
           </Link>
         </div>
-      </main>
+        </div>
+      </section>
 
       {/* Footer simplificado */}
       <footer className="border-t border-neutral-200 bg-white py-8">
         <div className="mx-auto max-w-7xl px-6 text-center">
           <Link href="/" className="inline-block">
             <h3 className="font-serif text-2xl font-light tracking-tight">
-              Euforica
+              EUFÓRICA
             </h3>
           </Link>
           <p className="mt-2 text-sm text-neutral-600">
-            © {new Date().getFullYear()} Euforica. Todos los derechos reservados.
+            © {new Date().getFullYear()} EUFÓRICA. Todos los derechos reservados.
           </p>
         </div>
       </footer>

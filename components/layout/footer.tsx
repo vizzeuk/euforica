@@ -38,7 +38,7 @@ export function Footer() {
           <div className="lg:col-span-5">
             <Link href="/" className="inline-block">
               <h3 className="font-serif text-3xl font-light tracking-tight">
-                Euforica
+                EUFÓRICA
               </h3>
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-neutral-600">
@@ -135,7 +135,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-neutral-200 pt-8 md:flex-row">
           <p className="text-sm text-neutral-600">
-            © {new Date().getFullYear()} Euforica. Todos los derechos reservados.
+            © {new Date().getFullYear()} EUFÓRICA. Todos los derechos reservados.
           </p>
           <div className="flex gap-6">
             {footerLinks.legal.map((link) => (
