@@ -152,3 +152,104 @@ export async function getPostSlugs() {
     return getExamplePosts().map(post => post.slug);
   }
 }
+
+/**
+ * GALERÍA DE EVENTOS
+ */
+
+// Query para obtener una galería por eventId
+const galleryByEventIdQuery = groq`*[_type == "gallery" && eventId.current == $eventId][0] {
+  _id,
+  "eventId": eventId.current,
+  eventName,
+  eventType,
+  coverImage {
+    asset->{
+      _id,
+      url
+    }
+  },
+  photos[] {
+    asset->{
+      _id,
+      url
+    },
+    caption,
+    order
+  },
+  expirationDate,
+  isActive,
+  allowDownload,
+  viewCount,
+  createdAt
+}`;
+
+/**
+ * Obtener una galería por su eventId
+ * Valida que la galería esté activa y no haya expirado
+ * @param eventId - El ID único del evento
+ * @returns Galería si está disponible, null si expiró o está inactiva
+ */
+export async function getGalleryByEventId(eventId: string) {
+  try {
+    const gallery = await client.fetch(galleryByEventIdQuery, { eventId }, {
+      next: {
+        revalidate: 300, // Revalidar cada 5 minutos
+      },
+    });
+
+    if (!gallery) {
+      console.log(`❌ Galería no encontrada: ${eventId}`);
+      return null;
+    }
+
+    // Validar que la galería esté activa
+    if (!gallery.isActive) {
+      console.log(`🔴 Galería inactiva: ${eventId}`);
+      return null;
+    }
+
+    // Validar que no haya expirado
+    const now = new Date();
+    const expirationDate = new Date(gallery.expirationDate);
+    
+    if (expirationDate < now) {
+      console.log(`⏰ Galería expirada: ${eventId} (expiró el ${expirationDate.toLocaleDateString()})`);
+      return null;
+    }
+
+    // Ordenar fotos por el campo 'order' si existe
+    if (gallery.photos) {
+      gallery.photos.sort((a: any, b: any) => {
+        const orderA = a.order ?? 999;
+        const orderB = b.order ?? 999;
+        return orderA - orderB;
+      });
+    }
+
+    console.log(`✅ Galería cargada: ${gallery.eventName} (${gallery.photos?.length || 0} fotos)`);
+    return gallery;
+  } catch (error) {
+    console.error('Error fetching gallery from Sanity:', error);
+    return null;
+  }
+}
+
+/**
+ * Incrementar el contador de visitas de una galería
+ * Se llama cada vez que alguien accede a la galería
+ * @param eventId - El ID único del evento
+ */
+export async function incrementGalleryViewCount(eventId: string) {
+  try {
+    // Nota: Esta función requiere un token de escritura
+    // Por ahora solo registra el intento
+    console.log(`📊 Vista registrada para: ${eventId}`);
+    
+    // Para implementar contador real:
+    // await client.patch(galleryId).inc({ viewCount: 1 }).commit();
+  } catch (error) {
+    console.error('Error incrementing view count:', error);
+  }
+}
+

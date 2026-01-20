@@ -6,8 +6,14 @@ export const leadFormSchema = z.object({
   }),
   guestCount: z.number().min(10, "Mínimo 10 invitados").max(250, "Máximo 250 invitados"),
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
-  email: z.string().email("Por favor ingresa un email válido"),
-  phone: z.string().min(9, "Por favor ingresa un teléfono válido"),
+  email: z.string()
+    .email("Por favor ingresa un email válido")
+    .refine((email) => email.endsWith("@gmail.com"), {
+      message: "Por favor usa una dirección de Gmail",
+    }),
+  phone: z.string()
+    .min(9, "Por favor ingresa un teléfono válido")
+    .regex(/^\+?[0-9]{9,15}$/, "Formato de teléfono inválido. Ejemplo: +56912345678"),
   message: z.string().max(500, "El mensaje no puede exceder 500 caracteres").optional(),
   eventDate: z.string().optional(),
   budget: z.enum(["basico", "premium", "luxury"], {

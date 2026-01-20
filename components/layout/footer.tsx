@@ -91,7 +91,7 @@ export function Footer() {
           </div>
 
           {/* Links Sections */}
-          <div className="grid grid-cols-2 gap-8 lg:col-span-4 lg:col-start-7">
+          <div className="grid grid-cols-2 gap-8 lg:col-span-7 lg:col-start-6">
             {/* Servicios */}
             <div>
               <h4 className="mb-4 text-sm font-medium uppercase tracking-wider">
@@ -129,29 +129,6 @@ export function Footer() {
                 ))}
               </ul>
             </div>
-          </div>
-
-          {/* Newsletter */}
-          <div className="lg:col-span-3">
-            <h4 className="mb-4 text-sm font-medium uppercase tracking-wider">
-              Newsletter
-            </h4>
-            <p className="mb-4 text-sm text-neutral-600">
-              Inspírate con nuestras ideas y tendencias.
-            </p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <input
-                type="email"
-                placeholder="Tu email"
-                className="flex-1 rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
-              />
-              <button
-                type="submit"
-                className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
-              >
-                Suscribir
-              </button>
-            </form>
           </div>
         </div>
 
