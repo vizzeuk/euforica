@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPosts } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/image";
+import { Header } from "@/components/layout/header";
 
 interface BlogCardProps {
   post: any;
@@ -102,9 +103,11 @@ export default async function BlogPage() {
   // Si no hay posts, mostrar mensaje
   if (!posts || posts.length === 0) {
     return (
-      <main className="bg-white">
-        <section className="px-6 py-24 md:py-32">
-          <div className="mx-auto max-w-7xl text-center">
+      <>
+        <Header />
+        <main className="bg-white">
+          <section className="px-6 pb-24 pt-32 md:pb-32 md:pt-40">
+            <div className="mx-auto max-w-7xl text-center">
             <h1 className="font-serif text-5xl font-light tracking-tight md:text-6xl">
               Blog
               <span className="block font-medium italic">Euforica</span>
@@ -115,21 +118,24 @@ export default async function BlogPage() {
           </div>
         </section>
       </main>
+      </>
     );
   }
 
   return (
-    <main className="bg-white">
-      {/* Hero Section */}
-      <section className="px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-7xl text-center">
+    <>
+      <Header />
+      <main className="bg-white">
+        {/* Hero Section */}
+        <section className="px-6 pb-24 pt-32 md:pb-32 md:pt-40">
+          <div className="mx-auto max-w-7xl text-center">
           <div>
             <p className="mb-4 text-sm uppercase tracking-[0.3em] text-neutral-500">
               Inspiración & Ideas
             </p>
             <h1 className="font-serif text-5xl font-light tracking-tight md:text-6xl lg:text-7xl">
               Blog
-              <span className="block font-medium italic">Euforica</span>
+              <span className="block font-medium italic">EUFÓRICA</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-neutral-600">
               Tendencias, consejos e inspiración para crear eventos
@@ -150,5 +156,6 @@ export default async function BlogPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

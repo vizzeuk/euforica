@@ -4,17 +4,23 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const navigation = [
   { name: 'Eventos', href: '#eventos' },
-  { name: 'Servicios', href: '#servicios' },
+  { name: 'Servicios', href: '/servicios' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Sobre Nosotros', href: '#nosotros' },
 ];
 
 export function Header() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isInContactSection, setIsInContactSection] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Detectar si estamos en la página de blog (fondo blanco)
+  const isBlogPage = pathname?.startsWith('/blog');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,9 +42,9 @@ export function Header() {
   }, []);
 
   // Determinar estilos basados en el estado
-  // En hero o contacto: fondo negro con texto blanco
-  // En otras secciones scrolleadas: fondo blanco con texto negro
-  const isDarkHeader = !isScrolled || isInContactSection;
+  // En blog: siempre blanco
+  // En home y servicios: negro en hero/contacto, blanco en otras secciones
+  const isDarkHeader = isBlogPage ? false : (!isScrolled || isInContactSection);
 
   return (
     <header

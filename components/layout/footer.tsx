@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Linkedin, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 const footerLinks = {
@@ -25,6 +25,7 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: Instagram, href: "https://instagram.com/euforica_cl", label: "Instagram" },
+  { icon: MessageCircle, href: "https://wa.me/message/7MBAFH5R744RH1", label: "WhatsApp" },
   { icon: Linkedin, href: "https://linkedin.com/company/euforica", label: "LinkedIn" },
 ];
 
@@ -60,7 +61,7 @@ export function Footer() {
                 className="flex items-center gap-2 transition-colors hover:text-black"
               >
                 <Phone className="h-4 w-4" />
-                +56 9 1234 5678
+                +56 9 5028 8198
               </a>
               <p className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
