@@ -96,7 +96,7 @@ export function LeadWizard() {
   const canProceedToStep3 = guestCount >= 10;
 
   return (
-    <section id="cotizador" className="bg-black px-6 py-24 md:py-32">
+    <section id="contacto" className="bg-black px-6 pb-32 pt-24 md:pb-40 md:pt-32">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <motion.div

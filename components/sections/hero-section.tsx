@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   const scrollToQuote = () => {
-    const quoteSection = document.getElementById("cotizador");
+    const quoteSection = document.getElementById("contacto");
     quoteSection?.scrollIntoView({ behavior: "smooth" });
   };
 

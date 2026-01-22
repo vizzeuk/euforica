@@ -13,7 +13,7 @@ export async function submitLead(data: LeadFormData) {
         "Content-Type": "application/json" 
       },
       body: JSON.stringify({
-        ...data,
+        ...data,  
         timestamp: new Date().toISOString(),
         source: "landing_page"
       }),

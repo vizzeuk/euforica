@@ -132,7 +132,9 @@ export function GalleryCarousel({
                 key={photo.asset._id}
                 className="relative min-w-0 flex-[0_0_100%] md:flex-[0_0_80%] lg:flex-[0_0_70%] px-2 md:px-4"
               >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-neutral-100">
+                <div className={`relative aspect-[4/3] overflow-hidden rounded-lg bg-neutral-100 transition-opacity duration-300 ${
+                  index === selectedIndex ? 'opacity-100' : 'opacity-50'
+                }`}>
                   <Image
                     src={photo.asset.url}
                     alt={photo.caption || `Foto ${index + 1} de ${eventName}`}

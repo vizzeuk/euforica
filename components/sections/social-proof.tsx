@@ -12,7 +12,7 @@ const testimonials = [
 
 export function SocialProof() {
   return (
-    <section className="relative overflow-hidden bg-neutral-50 py-16">
+    <section id="eventos" className="relative overflow-hidden bg-neutral-50 py-16">
       <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
       
       <motion.div

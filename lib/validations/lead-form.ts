@@ -7,9 +7,14 @@ export const leadFormSchema = z.object({
   guestCount: z.number().min(10, "Mínimo 10 invitados").max(250, "Máximo 250 invitados"),
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
   email: z.string()
-    .email("Por favor ingresa un email válido")
-    .refine((email) => email.endsWith("@gmail.com"), {
-      message: "Por favor usa una dirección de Gmail",
+    .min(1, "El email es requerido")
+    .refine((email) => {
+      // Validar formato básico: debe contener @ y al menos un . después del @
+      const atIndex = email.indexOf('@');
+      const lastDotIndex = email.lastIndexOf('.');
+      return atIndex > 0 && lastDotIndex > atIndex && lastDotIndex < email.length - 1;
+    }, {
+      message: "Por favor ingresa un email válido (ejemplo@dominio.com)",
     }),
   phone: z.string()
     .min(9, "Por favor ingresa un teléfono válido")
