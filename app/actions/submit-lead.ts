@@ -2,7 +2,7 @@
 
 import type { LeadFormData } from "@/lib/validations/lead-form";
 
-const N8N_WEBHOOK_URL = "https://euforica.app.n8n.cloud/webhook/c265c8ac-e6c0-4978-92dc-bf5da1532788";
+const N8N_WEBHOOK_URL = "http://51.222.12.68:5678/webhook/c265c8ac-e6c0-4978-92dc-bf5da1532788";
 
 export async function submitLead(data: LeadFormData) {
   try {
