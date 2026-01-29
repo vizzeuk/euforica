@@ -10,7 +10,7 @@ const navigation = [
   { name: 'Eventos', href: 'https://www.instagram.com/euforica_cl', target:"_blank", rel:"noopener noreferrer" },
   { name: 'Servicios', href: '/servicios' },
   { name: 'Blog', href: '/blog' },
-  { name: 'Sobre Nosotros', href: '#sobre-nosotros' },
+  { name: 'Sobre Nosotros', href: '/#sobre-nosotros' },
 ];
 
 export function Header() {

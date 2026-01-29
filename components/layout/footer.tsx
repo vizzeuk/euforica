@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Linkedin, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Instagram, Facebook, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { memo } from "react";
 
@@ -27,7 +27,7 @@ const footerLinks = {
 const socialLinks = [
   { icon: Instagram, href: "https://instagram.com/euforica_cl", label: "Instagram" },
   { icon: MessageCircle, href: "https://wa.me/message/7MBAFH5R744RH1", label: "WhatsApp" },
-  { icon: Linkedin, href: "https://linkedin.com/company/euforica", label: "LinkedIn" },
+  { icon: Facebook, href: "https://facebook.com/euforica.cl", label: "Facebook" },
 ];
 
 export function Footer() {

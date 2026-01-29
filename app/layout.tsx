@@ -9,6 +9,8 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
+  preload: true,
+  fallback: ['Georgia', 'serif'],
 });
 
 const inter = Inter({
@@ -16,6 +18,8 @@ const inter = Inter({
   variable: "--font-geist-sans",
   display: "swap",
   weight: ["300", "400", "500", "600"],
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 export const metadata: Metadata = {
@@ -36,6 +40,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+      </head>
       <body
         className={`${playfair.variable} ${inter.variable} font-sans antialiased`}
       >
