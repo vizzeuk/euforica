@@ -4,6 +4,18 @@ import Link from "next/link";
 import { getPosts } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/image";
 import { Header } from "@/components/layout/header";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Blog - EUFÓRICA | Inspiración y Tendencias de Eventos",
+  description: "Descubre las últimas tendencias en eventos, bodas y celebraciones. Tips, inspiración y historias detrás de nuestros eventos más memorables.",
+  keywords: "blog eventos, tendencias bodas, ideas celebraciones, inspiración eventos, tips bodas Chile",
+  openGraph: {
+    title: "Blog - EUFÓRICA",
+    description: "Inspiración y tendencias para eventos inolvidables.",
+    url: "https://euforica.cl/blog",
+  },
+};
 
 interface BlogCardProps {
   post: any;

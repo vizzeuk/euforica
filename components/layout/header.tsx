@@ -7,10 +7,10 @@ import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const navigation = [
-  { name: 'Eventos', href: '#eventos' },
+  { name: 'Eventos', href: 'https://www.instagram.com/euforica_cl', target:"_blank", rel:"noopener noreferrer" },
   { name: 'Servicios', href: '/servicios' },
   { name: 'Blog', href: '/blog' },
-  { name: 'Sobre Nosotros', href: '#nosotros' },
+  { name: 'Sobre Nosotros', href: '#sobre-nosotros' },
 ];
 
 export function Header() {
@@ -71,24 +71,40 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden items-center gap-8 md:flex">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`relative text-sm font-medium transition-colors ${
-                  isDarkHeader 
-                    ? 'text-white/90 hover:text-white' 
-                    : 'text-neutral-700 hover:text-black'
-                } after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-current after:transition-all hover:after:w-full`}
-              >
-                {item.name}
-              </Link>
+              item.target ? (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  target={item.target}
+                  rel={item.rel}
+                  className={`relative text-sm font-medium transition-colors ${
+                    isDarkHeader 
+                      ? 'text-white/90 hover:text-white' 
+                      : 'text-neutral-700 hover:text-black'
+                  } after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-current after:transition-all hover:after:w-full`}
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`relative text-sm font-medium transition-colors ${
+                    isDarkHeader 
+                      ? 'text-white/90 hover:text-white' 
+                      : 'text-neutral-700 hover:text-black'
+                  } after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-current after:transition-all hover:after:w-full`}
+                >
+                  {item.name}
+                </Link>
+              )
             ))}
           </div>
 
           {/* CTA Button Desktop */}
           <div className="hidden md:block">
             <Link
-              href="#contacto"
+              href="/#contacto"
               className={`inline-flex items-center rounded-md px-6 py-2.5 text-sm font-medium transition-all ${
                 isDarkHeader
                   ? 'border border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20'
@@ -129,17 +145,30 @@ export function Header() {
           >
             <div className="space-y-1 px-6 py-4">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block rounded-md px-4 py-3 text-base font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-black"
-                >
-                  {item.name}
-                </Link>
+                item.target ? (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    target={item.target}
+                    rel={item.rel}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block rounded-md px-4 py-3 text-base font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-black"
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block rounded-md px-4 py-3 text-base font-medium text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-black"
+                  >
+                    {item.name}
+                  </Link>
+                )
               ))}
               <Link
-                href="#contacto"
+                href="/#contacto"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="mt-4 block rounded-md bg-black px-4 py-3 text-center text-base font-medium text-white"
               >

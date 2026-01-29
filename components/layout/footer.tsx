@@ -3,19 +3,20 @@
 import Link from "next/link";
 import { Instagram, Linkedin, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { memo } from "react";
 
 const footerLinks = {
   servicios: [
-    { label: "Bodas", href: "/servicios/bodas" },
-    { label: "Eventos Corporativos", href: "/servicios/corporativos" },
-    { label: "Celebraciones", href: "/servicios/celebraciones" },
-    { label: "Producción Integral", href: "/servicios/produccion" },
+    { label: "Máquina de Chispas Frías", href: "/servicios" },
+    { label: "Glitter Bar Premium", href: "/servicios" },
+    { label: "Photo Estudio Editorial", href: "/servicios" },
+    { label: "Audio Guest Books", href: "/servicios" },
   ],
   empresa: [
-    { label: "Nosotros", href: "/nosotros" },
-    { label: "Portafolio", href: "/portafolio" },
+    { label: "Nosotros", href: "/#sobre-nosotros" },
+    { label: "Portafolio", href: "https://instagram.com/euforica_cl", external: true },
     { label: "Blog", href: "/blog" },
-    { label: "Contacto", href: "/contacto" },
+    { label: "Contacto", href: "https://wa.me/message/7MBAFH5R744RH1", external: true },
   ],
   legal: [
     { label: "Política de Privacidad", href: "/privacidad" },
@@ -100,7 +101,7 @@ export function Footer() {
               </h4>
               <ul className="space-y-3">
                 {footerLinks.servicios.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.label}>
                     <Link
                       href={link.href}
                       className="text-sm text-neutral-600 transition-colors hover:text-black"
@@ -120,12 +121,23 @@ export function Footer() {
               <ul className="space-y-3">
                 {footerLinks.empresa.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-neutral-600 transition-colors hover:text-black"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-neutral-600 transition-colors hover:text-black"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-neutral-600 transition-colors hover:text-black"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -154,3 +166,7 @@ export function Footer() {
     </footer>
   );
 }
+
+// Memoize Footer component to prevent unnecessary re-renders
+export const MemoizedFooter = memo(Footer);
+MemoizedFooter.displayName = "Footer";

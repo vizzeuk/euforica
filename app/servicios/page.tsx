@@ -1,14 +1,18 @@
 "use client";
 
-import { Sparkles, Camera, Phone, Zap, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Sparkles, Camera, Phone, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Header } from "@/components/layout/header";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
+
+// Lazy load del modal (solo se carga cuando se abre)
+const ServiceModal = lazy(() => import("@/components/sections/service-modal").then(mod => ({ default: mod.ServiceModal })));
 
 const services = [
   {
     icon: Zap,
+    number: "01",
     title: "Máquina de Chispas Frías",
     description: "Efectos visuales espectaculares y seguros que añaden magia a los momentos más importantes de tu celebración. Perfecta para entradas triunfales y el primer baile.",
     features: [
@@ -27,6 +31,7 @@ const services = [
   },
   {
     icon: Sparkles,
+    number: "02",
     title: "Glitter Bar Premium",
     description: "Estación de glamour donde tus invitados pueden brillar con glitter biodegradable y productos de alta calidad. Una experiencia única que dejará a todos deslumbrados.",
     features: [
@@ -46,6 +51,7 @@ const services = [
   },
   {
     icon: Camera,
+    number: "03",
     title: "Photo Estudio Editorial",
     description: "Lleva la fotografía de eventos al próximo nivel. Una sesión de fotos estilo editorial en blanco y negro que quedará impresa en tu galería digital exclusiva.",
     features: [
@@ -63,6 +69,7 @@ const services = [
   },
   {
     icon: Phone,
+    number: "04",
     title: "Audio Guest Books",
     description: "Captura la emoción y los mejores deseos en un formato más personal y emotivo. El clásico teléfono donde tus invitados dejan mensajes inolvidables.",
     features: [
@@ -113,7 +120,7 @@ export default function ServiciosPage() {
       <Header />
       <main className="min-h-screen bg-white">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-black px-6 pb-20 pt-40 md:pb-24 md:pt-48">
+        <section className="relative overflow-hidden bg-black px-6 pb-16 pt-40 md:pb-20 md:pt-48">
           {/* Gradient difuminado (comentado temporalmente - usar para efecto visual sofisticado) */}
           {/* <div className="absolute inset-0 bg-gradient-to-br from-black via-neutral-900 to-black opacity-90" /> */}
           
@@ -131,192 +138,91 @@ export default function ServiciosPage() {
           </div>
         </section>
 
-        {/* Services Grid - Alternating Layout */}
-        <section className="px-6 py-20 md:py-32">
-          <div className="mx-auto max-w-7xl space-y-32">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              const isReversed = index % 2 !== 0;
-              
-              return (
-                <div
-                  key={service.title}
-                  className={`grid gap-8 md:grid-cols-2 md:gap-12 lg:gap-16 items-center ${
-                    isReversed ? 'md:grid-flow-dense' : ''
-                  }`}
-                >
-                  {/* Image */}
-                  <div 
-                    className={`group relative aspect-[4/5] cursor-pointer overflow-hidden bg-neutral-100 ${
-                      isReversed ? 'md:col-start-2' : ''
-                    }`}
+        {/* Services Grid - Card Layout */}
+        <section className="px-6 py-16 md:py-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {services.map((service, index) => {
+                const Icon = service.icon;
+                
+                return (
+                  <div
+                    key={service.title}
                     onClick={() => openModal(index)}
+                    className="group relative cursor-pointer overflow-hidden border border-neutral-200 bg-white transition-all duration-300 hover:border-neutral-900 hover:shadow-2xl"
                   >
-                    <Image
-                      src={service.image}
-                      alt={service.imageAlt}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(min-width: 768px) 50vw, 100vw"
-                    />
-                    
-                    {/* Overlay sutil al hover */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/20">
-                      <span className="translate-y-4 text-sm font-medium uppercase tracking-wider text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                        Ver detalles
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className={`space-y-6 ${isReversed ? 'md:col-start-1 md:row-start-1' : ''}`}>
-                    {/* Icon */}
-                    <div className="inline-flex rounded-lg bg-neutral-100 p-3">
-                      <Icon className="h-6 w-6 text-neutral-800" />
+                    {/* Image */}
+                    <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
+                      <Image
+                        src={service.image}
+                        alt={service.imageAlt}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      />
+                      
+                      {/* Overlay al hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      
+                      {/* "Ver más" badge */}
+                      <div className="absolute bottom-3 right-3 translate-y-8 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                        <span className="rounded-full bg-white px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-neutral-900">
+                          Ver más
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Title */}
-                    <h2 className="font-serif text-3xl font-light tracking-tight text-neutral-900 lg:text-4xl">
-                      {service.title}
-                    </h2>
+                    {/* Content */}
+                    <div className="p-6">
+                      {/* Number */}
+                      <div className="mb-4 flex items-center justify-between">
+                        <span className="font-serif text-5xl font-light text-neutral-200 transition-colors group-hover:text-neutral-900">
+                          {service.number}
+                        </span>
+                      </div>
 
-                    {/* Description */}
-                    <p className="text-base leading-relaxed text-neutral-600">
-                      {service.description}
-                    </p>
+                      {/* Title */}
+                      <h2 className="mb-3 font-serif text-2xl font-light tracking-tight text-neutral-900 lg:text-3xl">
+                        {service.title}
+                      </h2>
 
-                    {/* Features List */}
-                    <ul className="space-y-3">
-                      {service.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-3 text-sm text-neutral-700">
-                          <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neutral-400" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+                      {/* Description */}
+                      <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-neutral-600">
+                        {service.description}
+                      </p>
 
-                    {/* CTA Button */}
-                    <Link
-                      href="/#contacto"
-                      className="inline-flex items-center gap-2 border-b border-neutral-900 pb-1 text-sm font-medium uppercase tracking-wider text-neutral-900 transition-colors hover:border-neutral-600 hover:text-neutral-600"
-                    >
-                      Cotizar Servicio
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
+                      {/* Quick features (primeros 2) */}
+                      <ul className="space-y-2">
+                        {service.features.slice(0, 2).map((feature) => (
+                          <li key={feature} className="flex items-start gap-3 text-xs text-neutral-500">
+                            <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-neutral-400" />
+                            <span className="line-clamp-1">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </section>
 
-        {/* Modal */}
+        {/* Modal - Lazy loaded */}
         {selectedService !== null && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
-            onClick={closeModal}
-          >
-            <div
-              className="relative max-h-[90vh] w-full max-w-4xl overflow-y-auto bg-white"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <button
-                onClick={closeModal}
-                className="absolute right-4 top-4 z-10 rounded-full bg-white p-2 shadow-lg transition-colors hover:bg-neutral-100"
-              >
-                <X className="h-5 w-5" />
-              </button>
-
-              {/* Content */}
-              <div className="p-8 md:p-12">
-                <div className="mb-8">
-                  {(() => {
-                    const Icon = services[selectedService].icon;
-                    return <Icon className="h-8 w-8 text-neutral-800" />;
-                  })()}
-                </div>
-
-                <h3 className="mb-4 font-serif text-3xl font-light tracking-tight text-neutral-900 md:text-4xl">
-                  {services[selectedService].title}
-                </h3>
-
-                <p className="mb-6 text-base leading-relaxed text-neutral-600">
-                  {services[selectedService].details}
-                </p>
-
-                {/* Gallery */}
-                <div className="relative mb-8 aspect-[16/10] overflow-hidden bg-neutral-100">
-                  <Image
-                    src={services[selectedService].gallery[currentImageIndex]}
-                    alt={services[selectedService].imageAlt}
-                    fill
-                    className="object-cover"
-                    sizes="(min-width: 1024px) 896px, calc(100vw - 2rem)"
-                  />
-
-                  {/* Navigation Arrows - only show if multiple images */}
-                  {services[selectedService].gallery.length > 1 && (
-                    <>
-                      <button
-                        onClick={prevImage}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-colors hover:bg-white"
-                      >
-                        <ChevronLeft className="h-6 w-6" />
-                      </button>
-                      <button
-                        onClick={nextImage}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-colors hover:bg-white"
-                      >
-                        <ChevronRight className="h-6 w-6" />
-                      </button>
-
-                      {/* Image Counter */}
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 text-xs text-white">
-                        {currentImageIndex + 1} / {services[selectedService].gallery.length}
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                {/* Features */}
-                <div className="mb-8">
-                  <h4 className="mb-4 text-sm font-medium uppercase tracking-wider text-neutral-900">
-                    Incluye
-                  </h4>
-                  <ul className="grid gap-3 md:grid-cols-2">
-                    {services[selectedService].features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-3 text-sm text-neutral-700">
-                        <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neutral-400" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* CTA */}
-                <Link
-                  href="/#contacto"
-                  onClick={closeModal}
-                  className="inline-flex w-full items-center justify-center bg-black px-8 py-4 text-sm font-medium uppercase tracking-wider text-white transition-all hover:bg-neutral-800 md:w-auto"
-                >
-                  Solicitar Cotización
-                </Link>
-              </div>
+          <Suspense fallback={
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-white border-t-transparent" />
             </div>
-          </div>
+          }>
+            <ServiceModal
+              service={services[selectedService]}
+              currentImageIndex={currentImageIndex}
+              onClose={closeModal}
+              onNextImage={nextImage}
+              onPrevImage={prevImage}
+            />
+          </Suspense>
         )}
 
         {/* CTA Section */}
@@ -336,12 +242,14 @@ export default function ServiciosPage() {
               >
                 Reserva Inmediata
               </Link>
-              <Link
-                href="/portafolio"
+              <a
+                href="https://instagram.com/euforica_cl"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-none border border-neutral-900 bg-transparent px-8 py-4 text-sm font-medium uppercase tracking-wider text-neutral-900 transition-all hover:bg-neutral-100"
               >
                 Ver Portafolio
-              </Link>
+              </a>
             </div>
           </div>
         </section>
