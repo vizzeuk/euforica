@@ -81,8 +81,29 @@ export default defineType({
       name: 'expirationDate',
       title: 'Fecha de Expiración',
       type: 'datetime',
-      description: 'Fecha en la que la galería dejará de estar disponible',
-      validation: (Rule) => Rule.required(),
+      description: '⚠️ IMPORTANTE: Selecciona fecha Y hora (preferiblemente al mediodía). Las fechas se guardan en UTC.',
+      initialValue: () => {
+        const date = new Date();
+        date.setDate(date.getDate() + 60); // 60 días en el futuro
+        date.setHours(12, 0, 0, 0); // Al mediodía para evitar problemas de zona horaria
+        return date.toISOString();
+      },
+      validation: (Rule) => Rule.required().custom((value) => {
+        if (!value) return 'La fecha es requerida';
+        const expirationDate = new Date(value);
+        const now = new Date();
+        const diffDays = Math.floor((expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (expirationDate.getTime() < now.getTime()) {
+          return `⚠️ La fecha ya pasó (hace ${Math.abs(diffDays)} días). La galería NO se mostrará.`;
+        }
+        
+        if (diffDays < 7) {
+          return `⚠️ La galería expirará en solo ${diffDays} días. Considera poner una fecha más lejana.`;
+        }
+        
+        return true;
+      }),
     }),
     defineField({
       name: 'isActive',
@@ -123,11 +144,24 @@ export default defineType({
       expirationDate: 'expirationDate',
     },
     prepare({ title, subtitle, media, isActive, expirationDate }) {
-      const expired = new Date(expirationDate) < new Date();
-      const status = !isActive ? '🔴 Inactiva' : expired ? '⏰ Expirada' : '✅ Activa';
+      const now = new Date();
+      const expDate = new Date(expirationDate);
+      const daysUntilExpiration = Math.ceil((expDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+      
+      let status = '';
+      if (!isActive) {
+        status = '🔴 Inactiva';
+      } else if (expDate < now) {
+        status = '⏰ EXPIRADA';
+      } else if (daysUntilExpiration <= 7) {
+        status = `⚠️ Expira en ${daysUntilExpiration} días`;
+      } else {
+        status = `✅ Activa (${daysUntilExpiration} días)`;
+      }
+      
       return {
-        title: `${title} (${status})`,
-        subtitle: subtitle || 'Tipo no especificado',
+        title: `${title}`,
+        subtitle: `${status} • ${subtitle || 'Tipo no especificado'}`,
         media,
       };
     },

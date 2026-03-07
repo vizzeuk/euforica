@@ -2,27 +2,23 @@
 
 import { Sparkles, Camera, Zap, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { memo } from "react";
 
 const featuredServices = [
   {
     icon: Zap,
     title: "Máquina de Chispas Frías",
-    tagline: "Efectos espectaculares sin humo ni riesgos",
     hook: "Transforma momentos ordinarios en explosiones de luz y magia",
     number: "01"
   },
   {
     icon: Sparkles,
     title: "Glitter Bar Premium",
-    description: "Glamour biodegradable para todos",
     hook: "Cada invitado se convierte en una obra de arte brillante",
     number: "02"
   },
   {
     icon: Camera,
     title: "Photo Estudio Editorial",
-    description: "Sesiones de fotos de nivel profesional",
     hook: "Captura la esencia del evento con estilo editorial único",
     number: "03"
   }
@@ -104,7 +100,3 @@ export function ServicesPreview() {
     </section>
   );
 }
-
-// Memoize ServicesPreview component to prevent unnecessary re-renders
-export const MemoizedServicesPreview = memo(ServicesPreview);
-MemoizedServicesPreview.displayName = "ServicesPreview";

@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { Sparkles, Camera, Phone, Zap } from "lucide-react";
+import { Sparkles, Camera, Phone, Zap, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Header } from "@/components/layout/header";
@@ -14,6 +14,7 @@ const services = [
     icon: Zap,
     number: "01",
     title: "Máquina de Chispas Frías",
+    tagline: "Efectos de luz sin riesgos",
     description: "Efectos visuales espectaculares y seguros que añaden magia a los momentos más importantes de tu celebración. Perfecta para entradas triunfales y el primer baile.",
     features: [
       "Sin humo ni olor molesto",
@@ -33,6 +34,7 @@ const services = [
     icon: Sparkles,
     number: "02",
     title: "Glitter Bar Premium",
+    tagline: "Glamour biodegradable para todos",
     description: "Estación de glamour donde tus invitados pueden brillar con glitter biodegradable y productos de alta calidad. Una experiencia única que dejará a todos deslumbrados.",
     features: [
       "Glitter 100% biodegradable",
@@ -53,6 +55,7 @@ const services = [
     icon: Camera,
     number: "03",
     title: "Photo Estudio Editorial",
+    tagline: "Fotografía de nivel profesional",
     description: "Lleva la fotografía de eventos al próximo nivel. Una sesión de fotos estilo editorial en blanco y negro que quedará impresa en tu galería digital exclusiva.",
     features: [
       "Fotos 'Blanco & Negro' de alta calidad",
@@ -71,6 +74,7 @@ const services = [
     icon: Phone,
     number: "04",
     title: "Audio Guest Books",
+    tagline: "Mensajes de voz para el recuerdo",
     description: "Captura la emoción y los mejores deseos en un formato más personal y emotivo. El clásico teléfono donde tus invitados dejan mensajes inolvidables.",
     features: [
       "Teléfono vintage auténtico y funcional",
@@ -119,98 +123,128 @@ export default function ServiciosPage() {
     <>
       <Header />
       <main className="min-h-screen bg-white">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden bg-black px-6 pb-16 pt-40 md:pb-20 md:pt-48">
-          {/* Gradient difuminado (comentado temporalmente - usar para efecto visual sofisticado) */}
-          {/* <div className="absolute inset-0 bg-gradient-to-br from-black via-neutral-900 to-black opacity-90" /> */}
-          
-          <div className="relative z-10 mx-auto max-w-4xl text-center text-white">
-            <p className="mb-6 text-xs uppercase tracking-[0.4em] text-neutral-400">
-              Nuestros Servicios
-            </p>
-            <h1 className="mb-6 font-serif text-4xl font-light tracking-tight md:text-6xl lg:text-7xl">
-              Experiencias que
-              <span className="block font-medium italic">Transforman</span>
-            </h1>
-            <p className="mx-auto max-w-2xl text-base leading-relaxed text-neutral-300 md:text-lg">
-              Cada servicio está diseñado meticulosamente para añadir ese toque especial que hace de tu evento algo verdaderamente memorable.
-            </p>
+
+        {/* HERO */}
+        <section className="relative flex min-h-[70vh] flex-col justify-end bg-neutral-950 px-6 pb-16 pt-40 md:px-12 lg:px-20">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute bottom-0 left-0 h-px w-full bg-white/10" />
+            <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white/5" />
           </div>
-        </section>
 
-        {/* Services Grid - Card Layout */}
-        <section className="px-6 py-16 md:py-24">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {services.map((service, index) => {
-                const Icon = service.icon;
-                
-                return (
-                  <div
-                    key={service.title}
-                    onClick={() => openModal(index)}
-                    className="group relative cursor-pointer overflow-hidden border border-neutral-200 bg-white transition-all duration-300 hover:border-neutral-900 hover:shadow-2xl"
+          <div className="relative z-10 mx-auto w-full max-w-7xl">
+            <div className="mb-8 flex items-center gap-4">
+              <span className="h-px w-12 bg-white/30" />
+              <p className="text-xs uppercase tracking-[0.4em] text-neutral-400">
+                Nuestros Servicios
+              </p>
+            </div>
+
+            <h1 className="font-serif text-5xl font-light leading-[1.05] tracking-tight text-white md:text-7xl lg:text-8xl">
+              Cada detalle,
+              <br />
+              <em className="font-medium not-italic text-neutral-300">diseñado</em>
+              <br />
+              para recordar.
+            </h1>
+
+            <div className="mt-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <p className="max-w-md text-base leading-relaxed text-neutral-400">
+                Cuatro experiencias únicas que transforman cualquier celebración en un momento que nadie olvidará.
+              </p>
+              <div className="flex gap-8">
+                {services.map((s) => (
+                  <button
+                    key={s.number}
+                    onClick={() => {
+                      const el = document.getElementById(`service-${s.number}`);
+                      el?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="text-xs font-light text-neutral-500 transition-colors hover:text-white"
                   >
-                    {/* Image */}
-                    <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
-                      <Image
-                        src={service.image}
-                        alt={service.imageAlt}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        priority={index < 3}
-                        loading={index < 3 ? "eager" : "lazy"}
-                      />
-                      
-                      {/* Overlay al hover */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                      
-                      {/* "Ver más" badge */}
-                      <div className="absolute bottom-3 right-3 translate-y-8 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                        <span className="rounded-full bg-white px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-neutral-900">
-                          Ver más
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      {/* Number */}
-                      <div className="mb-4 flex items-center justify-between">
-                        <span className="font-serif text-5xl font-light text-neutral-200 transition-colors group-hover:text-neutral-900">
-                          {service.number}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <h2 className="mb-3 font-serif text-2xl font-light tracking-tight text-neutral-900 lg:text-3xl">
-                        {service.title}
-                      </h2>
-
-                      {/* Description */}
-                      <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-neutral-600">
-                        {service.description}
-                      </p>
-
-                      {/* Quick features (primeros 2) */}
-                      <ul className="space-y-2">
-                        {service.features.slice(0, 2).map((feature) => (
-                          <li key={feature} className="flex items-start gap-3 text-xs text-neutral-500">
-                            <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-neutral-400" />
-                            <span className="line-clamp-1">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                );
-              })}
+                    {s.number}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Modal - Lazy loaded */}
+        {/* SERVICIOS */}
+        <div>
+          {services.map((service, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <article
+                key={service.title}
+                id={`service-${service.number}`}
+                className="group relative border-b border-neutral-100"
+              >
+                <div className="mx-auto grid max-w-7xl px-0 lg:grid-cols-2">
+
+                  {/* Imagen */}
+                  <div className={`relative h-[55vw] max-h-[680px] min-h-[300px] overflow-hidden bg-neutral-100 lg:h-auto lg:min-h-[560px] ${isEven ? "lg:order-last" : ""}`}>
+                    <Image
+                      src={service.image}
+                      alt={service.imageAlt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      priority={index < 2}
+                    />
+                    {/* Número watermark */}
+                    <div className="absolute bottom-4 left-4 select-none font-serif text-[80px] font-bold leading-none text-white/20 md:text-[120px]">
+                      {service.number}
+                    </div>
+                  </div>
+
+                  {/* Contenido */}
+                  <div className="flex flex-col justify-center px-8 py-14 md:px-12 lg:px-16 xl:px-20">
+                    {/* Número + tagline */}
+                    <div className="mb-6 flex items-center gap-4">
+                      <span className="font-mono text-xs text-neutral-400">{service.number}</span>
+                      <span className="h-px flex-1 bg-neutral-200" />
+                      <span className="text-xs uppercase tracking-widest text-neutral-400">{service.tagline}</span>
+                    </div>
+
+                    {/* Título */}
+                    <h2 className="mb-6 font-serif text-3xl font-light leading-tight tracking-tight text-neutral-900 md:text-4xl xl:text-5xl">
+                      {service.title}
+                    </h2>
+
+                    {/* Descripción */}
+                    <p className="mb-8 text-sm leading-relaxed text-neutral-500 md:text-base">
+                      {service.description}
+                    </p>
+
+                    {/* Features */}
+                    <ul className="mb-10 space-y-3">
+                      {service.features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-3 text-sm text-neutral-600">
+                          <span className="h-1 w-4 flex-shrink-0 bg-neutral-300" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTA - Ver detalle */}
+                    <button
+                      onClick={() => openModal(index)}
+                      className="group/btn relative self-start overflow-hidden border border-neutral-900 px-7 py-3 text-xs font-medium uppercase tracking-[0.2em] text-neutral-900 transition-all duration-300 hover:text-white"
+                    >
+                      <span className="absolute inset-0 -translate-x-full bg-neutral-900 transition-transform duration-300 ease-out group-hover/btn:translate-x-0" />
+                      <span className="relative flex items-center gap-3">
+                        Ver detalle
+                        <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {/* MODAL */}
         {selectedService !== null && (
           <Suspense fallback={
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90">
@@ -227,34 +261,46 @@ export default function ServiciosPage() {
           </Suspense>
         )}
 
-        {/* CTA Section */}
-        <section className="bg-neutral-50 px-6 py-24 md:py-32">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-6 font-serif text-4xl font-light tracking-tight text-neutral-900 md:text-5xl">
-              ¿Listo para crear
-              <span className="block font-medium italic">magia?</span>
-            </h2>
-            <p className="mx-auto mb-10 max-w-2xl text-lg text-neutral-600">
-              Permite que nuestro equipo haga realidad tus ideas más ambiciosas y diseñemos juntos un evento que nadie olvidará.
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Link
-                href="/#contacto"
-                className="inline-flex items-center justify-center rounded-none bg-black px-8 py-4 text-sm font-medium uppercase tracking-wider text-white transition-all hover:bg-neutral-800"
-              >
-                Reserva Inmediata
-              </Link>
-              <a
-                href="https://instagram.com/euforica_cl"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-none border border-neutral-900 bg-transparent px-8 py-4 text-sm font-medium uppercase tracking-wider text-neutral-900 transition-all hover:bg-neutral-100"
-              >
-                Ver Portafolio
-              </a>
+        {/* CTA FINAL */}
+        <section className="bg-neutral-950 px-6 py-28 md:py-36">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-end">
+              <div>
+                <p className="mb-6 text-xs uppercase tracking-[0.4em] text-neutral-500">
+                  ¿Tienes un evento en mente?
+                </p>
+                <h2 className="font-serif text-4xl font-light leading-tight text-white md:text-5xl lg:text-6xl">
+                  Diseñemos juntos
+                  <br />
+                  <em className="font-medium not-italic">algo único.</em>
+                </h2>
+              </div>
+              <div className="flex flex-col items-start gap-6 lg:items-end">
+                <p className="max-w-sm text-base leading-relaxed text-neutral-400 lg:text-right">
+                  Cuéntanos tu idea y te mostraremos cómo convertirla en la experiencia que siempre imaginaste.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <Link
+                    href="/#contacto"
+                    className="inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-medium uppercase tracking-widest text-neutral-900 transition-all hover:bg-neutral-100"
+                  >
+                    Cotizar Evento
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <a
+                    href="https://instagram.com/euforica_cl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-medium uppercase tracking-widest text-white transition-all hover:border-white/50"
+                  >
+                    Ver Portafolio
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </section>
+
       </main>
     </>
   );

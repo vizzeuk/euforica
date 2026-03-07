@@ -17,15 +17,3 @@ export const client = createClient({
     studioUrl: '/studio',
   },
 });
-
-/**
- * Cliente con token de lectura para contenido en draft (preview mode)
- */
-export const clientWithToken = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-  useCdn: false,
-  token: readToken,
-  perspective: 'previewDrafts',
-});

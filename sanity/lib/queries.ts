@@ -194,7 +194,7 @@ export async function getGalleryByEventId(eventId: string) {
   try {
     const gallery = await client.fetch(galleryByEventIdQuery, { eventId }, {
       next: {
-        revalidate: 300, // Revalidar cada 5 minutos
+        revalidate: 60, // Reducido a 1 minuto para debugging
       },
     });
 
@@ -209,12 +209,21 @@ export async function getGalleryByEventId(eventId: string) {
       return null;
     }
 
-    // Validar que no haya expirado
+    // Validar que no haya expirado - MEJORADO CON LOGS DETALLADOS
     const now = new Date();
     const expirationDate = new Date(gallery.expirationDate);
     
-    if (expirationDate < now) {
-      console.log(`⏰ Galería expirada: ${eventId} (expiró el ${expirationDate.toLocaleDateString()})`);
+    // Log detallado para debugging
+    console.log('🔍 DEBUG Comparación de fechas:');
+    console.log(`   Galería: ${eventId}`);
+    console.log(`   Ahora (servidor): ${now.toISOString()} (${now.toLocaleString('es-CL', { timeZone: 'America/Santiago' })})`);
+    console.log(`   Expira el: ${expirationDate.toISOString()} (${expirationDate.toLocaleString('es-CL', { timeZone: 'America/Santiago' })})`);
+    console.log(`   Diferencia: ${Math.floor((expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))} días`);
+    
+    // Comparar usando timestamps para evitar problemas de zona horaria
+    if (expirationDate.getTime() < now.getTime()) {
+      console.log(`⏰ Galería expirada: ${eventId}`);
+      console.log(`   Expiró hace ${Math.abs(Math.floor((expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))} días`);
       return null;
     }
 
@@ -227,10 +236,11 @@ export async function getGalleryByEventId(eventId: string) {
       });
     }
 
-    console.log(`✅ Galería cargada: ${gallery.eventName} (${gallery.photos?.length || 0} fotos)`);
+    const daysRemaining = Math.floor((expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    console.log(`✅ Galería cargada: ${gallery.eventName} (${gallery.photos?.length || 0} fotos, expira en ${daysRemaining} días)`);
     return gallery;
   } catch (error) {
-    console.error('Error fetching gallery from Sanity:', error);
+    console.error('❌ Error fetching gallery from Sanity:', error);
     return null;
   }
 }

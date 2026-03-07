@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Instagram, Facebook, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import { memo } from "react";
 
 const footerLinks = {
   servicios: [
@@ -66,7 +65,7 @@ export function Footer() {
               </a>
               <p className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                Santiago, Chile
+                Concepción, Chile
               </p>
             </div>
 
@@ -166,7 +165,3 @@ export function Footer() {
     </footer>
   );
 }
-
-// Memoize Footer component to prevent unnecessary re-renders
-export const MemoizedFooter = memo(Footer);
-MemoizedFooter.displayName = "Footer";

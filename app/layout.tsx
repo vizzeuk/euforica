@@ -50,8 +50,8 @@ export default function RootLayout({
       >
         {children}
         <Footer />
+        <GoogleAnalytics gaId="G-2TCDHH4SBH" />
       </body>
-      <GoogleAnalytics gaId="G-2TCDHH4SBH" />
     </html>
   );
 }

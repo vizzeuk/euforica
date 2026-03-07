@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
 
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 interface ServiceModalProps {
   service: any;
@@ -19,98 +20,130 @@ export function ServiceModal({
   onNextImage,
   onPrevImage,
 }: ServiceModalProps) {
-  const Icon = service.icon;
+
+  // Bloquear scroll del body
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  // Cerrar con Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
-      onClick={onClose}
-    >
+    <>
+      {/* Overlay */}
       <div
-        className="relative max-h-[90vh] w-full max-w-4xl overflow-y-auto bg-white"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 z-10 rounded-full bg-white p-2 shadow-lg transition-colors hover:bg-neutral-100"
-        >
-          <X className="h-5 w-5" />
-        </button>
+        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
-        {/* Content */}
-        <div className="p-8 md:p-12">
-          <div className="mb-8">
-            <Icon className="h-8 w-8 text-neutral-800" />
+      {/* Modal centrado */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8">
+      <div className="relative flex w-full max-w-5xl flex-col bg-white shadow-2xl animate-in fade-in zoom-in-95 duration-200 md:flex-row md:max-h-[88vh]">
+
+        {/*  COLUMNA IZQUIERDA: imagen  */}
+        <div className="relative flex-1 bg-neutral-950 md:max-w-[45%]">
+          <Image
+            src={service.gallery[currentImageIndex]}
+            alt={service.imageAlt}
+            fill
+            className="object-cover opacity-90"
+            sizes="(min-width: 768px) 45vw, 100vw"
+          />
+
+          {/* Número watermark */}
+          <div className="absolute bottom-6 left-6 select-none font-serif text-[100px] font-bold leading-none text-white/10">
+            {service.number}
           </div>
 
-          <h3 className="mb-4 font-serif text-3xl font-light tracking-tight text-neutral-900 md:text-4xl">
-            {service.title}
-          </h3>
+          {/* Navegación entre fotos */}
+          {service.gallery.length > 1 && (
+            <div className="absolute bottom-6 right-6 flex items-center gap-2">
+              <button
+                onClick={onPrevImage}
+                className="flex h-9 w-9 items-center justify-center border border-white/30 text-white transition-colors hover:bg-white/20"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <span className="min-w-[3ch] text-center text-xs font-light tabular-nums text-white/60">
+                {currentImageIndex + 1}/{service.gallery.length}
+              </span>
+              <button
+                onClick={onNextImage}
+                className="flex h-9 w-9 items-center justify-center border border-white/30 text-white transition-colors hover:bg-white/20"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
 
-          <p className="mb-6 text-base leading-relaxed text-neutral-600">
-            {service.details}
-          </p>
+        {/*  COLUMNA DERECHA: contenido  */}
+        <div className="flex flex-col overflow-y-auto md:flex-1">
 
-          {/* Gallery */}
-          <div className="relative mb-8 aspect-[16/10] overflow-hidden bg-neutral-100">
-            <Image
-              src={service.gallery[currentImageIndex]}
-              alt={service.imageAlt}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 896px, calc(100vw - 2rem)"
-            />
-
-            {/* Navigation Arrows - only show if multiple images */}
-            {service.gallery.length > 1 && (
-              <>
-                <button
-                  onClick={onPrevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-colors hover:bg-white"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button
-                  onClick={onNextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-colors hover:bg-white"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-
-                {/* Image Counter */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 text-xs text-white">
-                  {currentImageIndex + 1} / {service.gallery.length}
-                </div>
-              </>
-            )}
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-neutral-100 px-8 py-5">
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-xs text-neutral-400">{service.number}</span>
+              <span className="h-px w-6 bg-neutral-200" />
+              <span className="text-xs uppercase tracking-widest text-neutral-400">{service.tagline}</span>
+            </div>
+            <button
+              onClick={onClose}
+              className="group flex h-9 w-9 items-center justify-center border border-neutral-200 transition-colors hover:border-neutral-900 hover:bg-neutral-900"
+            >
+              <X className="h-4 w-4 text-neutral-500 transition-colors group-hover:text-white" />
+            </button>
           </div>
 
-          {/* Features */}
-          <div className="mb-8">
-            <h4 className="mb-4 text-sm font-medium uppercase tracking-wider text-neutral-900">
-              Incluye
-            </h4>
-            <ul className="grid gap-3 md:grid-cols-2">
-              {service.features.map((feature: string) => (
-                <li key={feature} className="flex items-start gap-3 text-sm text-neutral-700">
-                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neutral-400" />
+          {/* Body */}
+          <div className="flex flex-1 flex-col px-8 py-10">
+            <h3 className="mb-5 font-serif text-3xl font-light leading-tight tracking-tight text-neutral-900 md:text-4xl">
+              {service.title}
+            </h3>
+
+            <p className="mb-8 text-sm leading-loose text-neutral-500">
+              {service.details}
+            </p>
+
+            {/* Separador */}
+            <div className="mb-8 flex items-center gap-4">
+              <span className="text-xs uppercase tracking-[0.3em] text-neutral-400">Incluye</span>
+              <span className="h-px flex-1 bg-neutral-100" />
+            </div>
+
+            {/* Features */}
+            <ul className="mb-10 space-y-4">
+              {service.features.map((feature: string, i: number) => (
+                <li key={feature} className="flex items-start gap-4 text-sm text-neutral-700">
+                  <span className="mt-0.5 font-mono text-xs text-neutral-300">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <span>{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* CTA */}
-          <Link
-            href="/#contacto"
-            onClick={onClose}
-            className="inline-flex w-full items-center justify-center bg-black px-8 py-4 text-sm font-medium uppercase tracking-wider text-white transition-all hover:bg-neutral-800 md:w-auto"
-          >
-            Solicitar Cotización
-          </Link>
+          {/* Footer CTA */}
+          <div className="border-t border-neutral-100 px-8 py-6">
+            <Link
+              href="/#contacto"
+              onClick={onClose}
+              className="group/cta flex w-full items-center justify-between bg-neutral-950 px-7 py-4 text-white transition-colors hover:bg-neutral-800"
+            >
+              <span className="text-xs font-medium uppercase tracking-[0.2em]">Solicitar cotización</span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover/cta:translate-x-1" />
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
